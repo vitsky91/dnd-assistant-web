@@ -142,6 +142,12 @@ export function BattlePage() {
           applyBattleEnded()
         })
 
+        // Server broadcasts map_loaded when DM creates battle_state
+        ch.on('map_loaded', (payload) => {
+          const p = payload as { map: MapData }
+          setMap(p.map)
+        })
+
         // Reconnect: server sends current battle state on join
         ch.on('battle_state', (payload) => {
           const p = payload as BattleStateEventPayload
