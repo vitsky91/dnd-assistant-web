@@ -5,14 +5,23 @@ All cross-project coordination lives in `../_contracts/`.
 
 ### ⚠️ GOVERNANCE — READ FIRST
 **Read `../_contracts/GOVERNANCE.md` before doing anything.**
-You are a **sub-agent (Web)**. You can:
-- ✅ Check off YOUR Web checkboxes in tickets
-- ✅ Add comments to tickets (use AGENT COMMENT format)
+You are a **sub-agent (Web)**. Your scope is ONLY the Web project.
+
+**You can:**
+- ✅ Write code ONLY in this Web repo
+- ✅ Check off checkboxes ONLY under `## Web` sections in tickets
+- ✅ Add AGENT COMMENT at the bottom of tickets (see GOVERNANCE.md for format)
 - ✅ Create ADRs in `../_contracts/decisions/`
-- ❌ **DO NOT** create, delete, move, or rename tickets
-- ❌ **DO NOT** edit ROADMAP, GOVERNANCE, or AGENT_GUIDE
-- ❌ **DO NOT** change ticket priorities, descriptions, or specs
-- ❌ **DO NOT** modify backend or iOS code
+
+**You MUST NOT:**
+- ❌ Create, delete, move, or rename tickets
+- ❌ Edit ROADMAP, GOVERNANCE, or AGENT_GUIDE
+- ❌ Change ticket titles, priorities, descriptions, or field specs
+- ❌ Check off checkboxes under `## Backend` or `## iOS` sections
+- ❌ Modify backend or iOS code
+- ❌ Move tickets from `open/` to `done/`
+
+**When reading tickets:** Only look at the `## Web` section for your tasks. Ignore `## Backend` and `## iOS` sections — those belong to other agents.
 
 **Read `../_contracts/tickets/open/` at the start of every session.**
 See `../_contracts/AGENT_GUIDE.md` for workflow instructions.
