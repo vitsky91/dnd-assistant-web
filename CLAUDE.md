@@ -21,6 +21,22 @@ API contract (source of truth): `../DNDAssistantBackend/dnd_assistant/priv/stati
 ### Git
 - Push to both remotes after each session: `git push origin main && git push gitea main`
 
+### 🎯 Current Sprint (Sprint 2, 2026-03-29)
+
+Both tickets can be done in parallel. No blockers.
+
+1. **TICK-008** — Battle combat UI in BattlePage
+   - Combat log panel in sidebar — shows `dice_rolled`, `hp_updated`, `condition_changed` events (chronological, newest on top)
+   - Roll dice button in InitiativePanel (on current player's turn) → sends `roll_dice`
+   - HP bar per token on BattleCanvas (small bar under token circle, green→red gradient)
+   - Condition icons on tokens (tiny icons: skull, eye-slash, etc.)
+
+2. **TICK-009** — Session management UI in BattlePage
+   - Players panel in sidebar — shows online players (green dot), DM can click to kick
+   - "End Battle" button for DM in BattlePage header
+   - Handle `player_joined` / `player_left` — update online player list
+   - Handle `battle_ended` — show "Battle ended" overlay with Back button
+
 ---
 
 ## Project
