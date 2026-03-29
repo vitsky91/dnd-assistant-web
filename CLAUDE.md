@@ -2,9 +2,24 @@
 
 ## Contracts System
 All cross-project coordination lives in `../_contracts/`.
+
+### ⚠️ GOVERNANCE — READ FIRST
+**Read `../_contracts/GOVERNANCE.md` before doing anything.**
+You are a **sub-agent (Web)**. You can:
+- ✅ Check off YOUR Web checkboxes in tickets
+- ✅ Add comments to tickets (use AGENT COMMENT format)
+- ✅ Create ADRs in `../_contracts/decisions/`
+- ❌ **DO NOT** create, delete, move, or rename tickets
+- ❌ **DO NOT** edit ROADMAP, GOVERNANCE, or AGENT_GUIDE
+- ❌ **DO NOT** change ticket priorities, descriptions, or specs
+- ❌ **DO NOT** modify backend or iOS code
+
 **Read `../_contracts/tickets/open/` at the start of every session.**
-See `../_contracts/AGENT_GUIDE.md` for full instructions.
+See `../_contracts/AGENT_GUIDE.md` for workflow instructions.
 API contract (source of truth): `../DNDAssistantBackend/dnd_assistant/priv/static/swagger.json`
+
+### Git
+- Push to both remotes after each session: `git push origin main && git push gitea main`
 
 ---
 
