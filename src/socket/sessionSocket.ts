@@ -69,6 +69,15 @@ export function pushHideFog(ch: Channel, cells: { x: number; y: number }[]) {
   ch.push('hide_fog', { cells })
 }
 
+export function pushRollDice(
+  ch: Channel,
+  dice: string,
+  purpose: string,
+  characterId: string
+) {
+  ch.push('roll_dice', { dice, purpose, character_id: characterId })
+}
+
 export function pushSetInitiative(
   ch: Channel,
   order: { character_id: string; player_id: string; player_username: string; initiative: number }[]

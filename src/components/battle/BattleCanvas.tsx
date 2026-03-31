@@ -28,7 +28,7 @@ interface Props {
 }
 
 export function BattleCanvas({ containerWidth, containerHeight, channel, currentUserId }: Props) {
-  const { map, battleState, isDM, selectedTokenCharacterId, selectToken } = useBattleStore()
+  const { map, battleState, isDM, selectedTokenCharacterId, selectToken, hpMap, conditions } = useBattleStore()
   const stageRef = useRef<Konva.Stage>(null)
 
   // Drawing state
@@ -339,6 +339,33 @@ export function BattleCanvas({ containerWidth, containerHeight, channel, current
               const entry = battleState?.initiative_order.find((e) => e.character_id === charId)
               const label = entry?.player_username?.[0]?.toUpperCase() ?? '?'
 
+              // HP bar
+              const hp = hpMap[charId]
+              const barW = cellSize * 0.76
+              const barH = 4
+              const barX = pos.x * cellSize + (cellSize - barW) / 2
+              const barY = pos.y * cellSize + cellSize - barH - 3
+              const hpRatio = hp ? Math.max(0, Math.min(1, hp.hp / hp.max_hp)) : null
+              const hpColor = hpRatio == null ? '#555'
+                : hpRatio > 0.5 ? '#52B788'
+                : hpRatio > 0.25 ? '#F4A261'
+                : '#E63946'
+
+              // Condition badges
+              const tokenConditions = conditions[charId] ?? []
+              const CONDITION_ABBR: Record<string, string> = {
+                poisoned: 'Po', stunned: 'St', blinded: 'Bl', paralyzed: 'Pa',
+                prone: 'Pr', invisible: 'In', frightened: 'Fr', grappled: 'Gr',
+                restrained: 'Re', exhausted: 'Ex', dead: 'De',
+              }
+              const CONDITION_COLOR: Record<string, string> = {
+                poisoned: '#52B788', stunned: '#F4A261', blinded: '#8B9BB0',
+                paralyzed: '#B07AA1', prone: '#7A5530', invisible: '#4E79A7',
+                frightened: '#E8B84B', grappled: '#76B7B2', restrained: '#E15759',
+                exhausted: '#555577', dead: '#9B2335',
+              }
+              const badgeSize = Math.max(10, cellSize * 0.2)
+
               return (
                 <React.Fragment key={charId}>
                   {isSelected && (
@@ -350,13 +377,39 @@ export function BattleCanvas({ containerWidth, containerHeight, channel, current
                   <Text
                     x={px - radius} y={py - radius}
                     width={radius * 2} height={radius * 2}
-                    text={label}
-                    fontSize={radius * 0.9}
-                    fontStyle="bold"
-                    fill="#FFFFFF"
-                    align="center"
-                    verticalAlign="middle"
+                    text={label} fontSize={radius * 0.9} fontStyle="bold"
+                    fill="#FFFFFF" align="center" verticalAlign="middle"
                   />
+
+                  {/* HP bar */}
+                  {hpRatio !== null && (
+                    <>
+                      <Rect x={barX} y={barY} width={barW} height={barH}
+                        fill="#1A1A2E" cornerRadius={2} />
+                      <Rect x={barX} y={barY} width={barW * hpRatio} height={barH}
+                        fill={hpColor} cornerRadius={2} />
+                    </>
+                  )}
+
+                  {/* Condition badges */}
+                  {tokenConditions.slice(0, 4).map((cond, i) => {
+                    const bx = pos.x * cellSize + i * (badgeSize + 1)
+                    const by = pos.y * cellSize
+                    return (
+                      <React.Fragment key={cond}>
+                        <Circle x={bx + badgeSize / 2} y={by + badgeSize / 2}
+                          radius={badgeSize / 2}
+                          fill={CONDITION_COLOR[cond] ?? '#555'} opacity={0.9} />
+                        <Text
+                          x={bx} y={by}
+                          width={badgeSize} height={badgeSize}
+                          text={CONDITION_ABBR[cond] ?? cond.slice(0, 2).toUpperCase()}
+                          fontSize={badgeSize * 0.5} fill="#FFF"
+                          align="center" verticalAlign="middle"
+                        />
+                      </React.Fragment>
+                    )
+                  })}
                 </React.Fragment>
               )
             })}

@@ -125,6 +125,29 @@ export interface BattleState {
   fog_state: Record<string, FogCell>
 }
 
+// ── Combat Log ────────────────────────────────────────────────────────────────
+
+export type CombatLogEventType = 'dice_rolled' | 'hp_updated' | 'condition_changed'
+
+export interface CombatLogEntry {
+  id: string
+  type: CombatLogEventType
+  timestamp: string
+  character_id: string
+  // dice_rolled
+  player_username?: string
+  dice?: string
+  result?: number
+  purpose?: string
+  // hp_updated
+  hp?: number
+  max_hp?: number
+  delta?: number
+  // condition_changed
+  condition?: string
+  active?: boolean
+}
+
 // ── Editor ────────────────────────────────────────────────────────────────────
 
 export type EditorTool = 'brush' | 'eraser' | 'fog_reveal' | 'fog_hide' | 'token'

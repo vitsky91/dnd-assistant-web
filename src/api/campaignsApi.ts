@@ -16,4 +16,10 @@ export const campaignsApi = {
 
   create: (body: CampaignPayload) =>
     api.post<{ data: Campaign }>('/campaigns', body),
+
+  kickPlayer: (campaignId: string, playerId: string) =>
+    api.delete<{ ok: boolean }>(`/campaigns/${campaignId}/players/${playerId}`),
+
+  endBattle: (campaignId: string) =>
+    api.post<{ data: { map: unknown; battle_state: unknown } }>(`/campaigns/${campaignId}/end_battle`),
 }
