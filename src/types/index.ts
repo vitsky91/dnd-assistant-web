@@ -25,6 +25,15 @@ export interface Character {
   max_hit_points: number
   armor_class: number
   speed: number
+  proficiency_bonus?: number
+  stats?: {
+    str: number; dex: number; con: number; int: number; wis: number; cha: number
+  } | null
+  spell_slots?: Record<string, { total: number; used: number }> | null
+  skill_proficiencies?: Record<string, boolean> | null
+  saving_throw_proficiencies?: Record<string, boolean> | null
+  spellcasting_ability?: string | null
+  class_features?: string[] | null
   owner_id: string
   inserted_at: string
   updated_at: string
@@ -240,6 +249,24 @@ export interface Spell {
   description: string
   classes: string[]
   ruleset: string
+}
+
+// ── Level Up ─────────────────────────────────────────────────────────────────
+
+export type ASIChoice =
+  | { type: 'plus2'; stat: StatKey }
+  | { type: 'plus1plus1'; stat1: StatKey; stat2: StatKey }
+  | { type: 'feat'; feat: string }
+
+export interface LevelUpState {
+  newLevel: number
+  hpRoll: number          // raw roll (before CON mod)
+  hpChoice: 'roll' | 'average'
+  subclass: string | null // chosen subclass id
+  newClassSkills: string[]
+  chosenSpells: Spell[]   // new known spells
+  chosenCantrips: Spell[]
+  asiChoice: ASIChoice | null
 }
 
 // ── Character Creation ────────────────────────────────────────────────────────

@@ -18,7 +18,7 @@ function hpColor(hp: number, max: number): string {
   return 'bg-[#9B2335]'
 }
 
-function CharacterCard({ character }: { character: Character }) {
+function CharacterCard({ character, onLevelUp }: { character: Character; onLevelUp: (id: string) => void }) {
   const hpRatio = character.max_hit_points > 0
     ? character.hit_points / character.max_hit_points
     : 0
@@ -72,6 +72,15 @@ function CharacterCard({ character }: { character: Character }) {
           />
         </div>
       </div>
+
+      {character.level < 20 && (
+        <button
+          onClick={() => onLevelUp(character.id)}
+          className="mt-3 w-full py-1.5 rounded-lg border border-[#C9963A]/40 text-xs font-semibold text-[#C9963A] hover:bg-[#C9963A]/10 transition-colors"
+        >
+          ↑ Level Up
+        </button>
+      )}
     </div>
   )
 }
@@ -153,7 +162,7 @@ export function CharactersPage() {
         {!isLoading && !error && characters.length > 0 && (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {characters.map((c) => (
-              <CharacterCard key={c.id} character={c} />
+              <CharacterCard key={c.id} character={c} onLevelUp={(id) => navigate(`/characters/${id}/level-up`)} />
             ))}
           </div>
         )}
