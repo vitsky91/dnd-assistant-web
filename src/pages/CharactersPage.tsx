@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { Layout } from '../components/shared/Layout'
 import { Spinner } from '../components/shared/Spinner'
 import { charactersApi } from '../api/charactersApi'
@@ -76,9 +77,12 @@ function CharacterCard({ character }: { character: Character }) {
 }
 
 export function CharactersPage() {
+  const navigate = useNavigate()
+  const location = useLocation()
   const [characters, setCharacters] = useState<Character[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [toast, setToast] = useState<string | null>(null)
 
   useEffect(() => {
     setIsLoading(true)
@@ -88,14 +92,37 @@ export function CharactersPage() {
       .finally(() => setIsLoading(false))
   }, [])
 
+  useEffect(() => {
+    const msg = (location.state as { toast?: string } | null)?.toast
+    if (msg) {
+      setToast(msg)
+      window.history.replaceState({}, '')
+      const t = setTimeout(() => setToast(null), 3000)
+      return () => clearTimeout(t)
+    }
+  }, [])
+
   return (
     <Layout>
       <div className="p-6 max-w-5xl mx-auto w-full">
+        {/* Toast */}
+        {toast && (
+          <div className="fixed top-4 left-1/2 -translate-x-1/2 z-50 bg-[#52B788] text-[#0D0F14] text-sm font-semibold px-5 py-2.5 rounded-xl shadow-lg">
+            {toast}
+          </div>
+        )}
+
         <div className="flex items-center justify-between mb-6">
           <div>
             <h1 className="text-xl font-bold text-[#F0EBE1]">Characters</h1>
             <p className="text-sm text-[#8B9BB0] mt-0.5">Your adventurers</p>
           </div>
+          <button
+            onClick={() => navigate('/characters/new')}
+            className="px-4 py-2 rounded-xl bg-[#C9963A] text-[#0D0F14] text-sm font-semibold hover:bg-[#E8B84B] transition-colors"
+          >
+            + New Character
+          </button>
         </div>
 
         {isLoading && (
@@ -113,8 +140,13 @@ export function CharactersPage() {
         {!isLoading && !error && characters.length === 0 && (
           <div className="text-center py-20">
             <div className="text-5xl mb-4">🧝</div>
-            <p className="text-[#8B9BB0] text-sm">No characters yet.</p>
-            <p className="text-[#8B9BB0] text-sm">Create one in the iOS app to get started.</p>
+            <p className="text-[#8B9BB0] text-sm mb-4">No characters yet.</p>
+            <button
+              onClick={() => navigate('/characters/new')}
+              className="px-5 py-2.5 rounded-xl bg-[#C9963A] text-[#0D0F14] text-sm font-semibold hover:bg-[#E8B84B] transition-colors"
+            >
+              Create Your First Character
+            </button>
           </div>
         )}
 

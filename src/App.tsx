@@ -11,8 +11,9 @@ import { HomePage }       from './pages/HomePage'
 import { CharactersPage } from './pages/CharactersPage'
 import { CampaignsPage }  from './pages/CampaignsPage'
 import { MapsPage }       from './pages/MapsPage'
-import { MapEditorPage }  from './pages/MapEditorPage'
-import { BattlePage }     from './pages/BattlePage'
+import { MapEditorPage }          from './pages/MapEditorPage'
+import { BattlePage }             from './pages/BattlePage'
+import { CharacterCreationPage }  from './pages/CharacterCreationPage'
 
 // Wrapper that loads map from ?mapId= query param
 function MapEditorLoader() {
@@ -47,7 +48,8 @@ function AppRoutes() {
       <Route path="/register" element={<RegisterPage />} />
 
       <Route path="/" element={<AuthGuard><HomePage /></AuthGuard>} />
-      <Route path="/characters" element={<AuthGuard><CharactersPage /></AuthGuard>} />
+      <Route path="/characters"     element={<AuthGuard><CharactersPage /></AuthGuard>} />
+      <Route path="/characters/new" element={<AuthGuard><CharacterCreationPage /></AuthGuard>} />
       <Route path="/campaigns"  element={<AuthGuard><CampaignsPage /></AuthGuard>} />
       <Route path="/maps"       element={<AuthGuard><MapsPage /></AuthGuard>} />
 

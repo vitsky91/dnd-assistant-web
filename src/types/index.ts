@@ -151,3 +151,136 @@ export interface CombatLogEntry {
 // ── Editor ────────────────────────────────────────────────────────────────────
 
 export type EditorTool = 'brush' | 'eraser' | 'fog_reveal' | 'fog_hide' | 'token'
+
+// ── Game Data ─────────────────────────────────────────────────────────────────
+
+export interface RaceTrait {
+  name: string
+  description: string
+}
+
+export interface Subrace {
+  id: string
+  name: string
+  stat_bonuses: Record<string, number>
+  speed?: number
+  darkvision?: number | null
+  traits: RaceTrait[]
+}
+
+export interface Race {
+  id: string
+  name: string
+  ruleset: string
+  stat_bonuses: Record<string, number>
+  stat_bonus_choice: { note: string } | null
+  speed: number
+  size: string
+  darkvision: number | null
+  languages: string[]
+  traits: RaceTrait[]
+  subraces: Subrace[]
+}
+
+export interface SpellcastingInfo {
+  ability: string
+  type: 'full' | 'half' | 'third' | 'pact' | 'artificer'
+  spell_list: string
+  prepared: boolean
+  ritual_casting?: boolean
+  spellbook?: boolean
+}
+
+export interface Subclass {
+  id: string
+  name: string
+}
+
+export interface GameClass {
+  id: string
+  name: string
+  ruleset: string
+  hit_die: string
+  primary_ability: string[]
+  saving_throw_proficiencies: string[]
+  skill_choices: { count: number; options: string[] | 'any' }
+  spellcasting: SpellcastingInfo | null
+  subclass_name: string
+  subclass_level: number
+  subclasses: Subclass[]
+}
+
+export interface BackgroundFeature {
+  name: string
+  description: string
+}
+
+export interface Background {
+  id: string
+  name: string
+  ruleset: string
+  description: string
+  stat_bonuses: Record<string, number> | null
+  skill_proficiencies: string[]
+  tool_proficiencies: string[]
+  languages: number
+  origin_feat: string | null
+  feature: BackgroundFeature
+}
+
+export interface Spell {
+  id: string
+  name: string
+  level: number
+  school: string
+  casting_time: string
+  range: string
+  components: string
+  duration: string
+  description: string
+  classes: string[]
+  ruleset: string
+}
+
+// ── Character Creation ────────────────────────────────────────────────────────
+
+export type AbilityScoreMethod = 'standard_array' | 'point_buy' | 'manual'
+
+export type StatKey = 'str' | 'dex' | 'con' | 'int' | 'wis' | 'cha'
+
+export interface AbilityScores {
+  str: number
+  dex: number
+  con: number
+  int: number
+  wis: number
+  cha: number
+}
+
+export interface CharacterCreatePayload {
+  name: string
+  ruleset: '2014' | '2024'
+  race: string
+  subrace?: string | null
+  class: string
+  subclass?: string | null
+  level: number
+  background?: string | null
+  alignment?: string | null
+  hit_points: number
+  max_hit_points: number
+  armor_class: number
+  speed: number
+  proficiency_bonus: number
+  stats: AbilityScores
+  skill_proficiencies: Record<string, boolean>
+  saving_throw_proficiencies: Record<string, boolean>
+  spell_slots: Record<string, number>
+  spellcasting_ability?: string | null
+  languages: string[]
+  tool_proficiencies: string[]
+  personality_traits?: string | null
+  ideals?: string | null
+  bonds?: string | null
+  flaws?: string | null
+}
